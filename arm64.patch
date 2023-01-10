@@ -1,0 +1,51 @@
+Subject: [PATCH] arm64
+---
+Index: catboost/python-package/mk_wheel.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/catboost/python-package/mk_wheel.py b/catboost/python-package/mk_wheel.py
+--- a/catboost/python-package/mk_wheel.py	(revision b99a4f935d19aeab0d8d190a83562f9b53aa54e2)
++++ b/catboost/python-package/mk_wheel.py	(date 1673351850215)
+@@ -15,7 +15,8 @@
+ 
+ sys.dont_write_bytecode = True
+ 
+-PL_LINUX = ['manylinux1_x86_64']
++PL_LINUX_X86_64 = ['manylinux1_x86_64']
++PL_LINUX_ARM64 = ['linux_aarch64']
+ PL_MACOS_X86_64 = [
+     'macosx_10_6_intel',
+     'macosx_10_9_intel',
+@@ -124,7 +125,10 @@
+     platform_tags = set()
+     for platform in target_platforms:
+         if 'linux' in platform:
+-            platform_tags = platform_tags.union(PL_LINUX)
++            if 'aarch64' in platform:
++                platform_tags = platform_tags.union(PL_LINUX_ARM64)
++            else:
++                platform_tags = platform_tags.union(PL_LINUX_X86_64)
+         elif 'darwin' in platform:
+             if 'arm64' in platform:
+                platform_tags = platform_tags.union(PL_MACOS_ARM64)
+Index: build/ymake_conf.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/build/ymake_conf.py b/build/ymake_conf.py
+--- a/build/ymake_conf.py	(revision b99a4f935d19aeab0d8d190a83562f9b53aa54e2)
++++ b/build/ymake_conf.py	(date 1673351759670)
+@@ -2182,8 +2182,8 @@
+         # They are not used separately and get overriden together, so it is safe.
+         # TODO(somov): Удалить эту переменную и PYTHON_LIBRARIES из makelist-ов.
+         self.libraries = ''
+-        if preset('USE_ARCADIA_PYTHON') == 'no' and not preset('USE_SYSTEM_PYTHON') and not self.tc.os_sdk_local:
+-            raise Exception("Use fixed python (see https://clubs.at.yandex-team.ru/arcadia/15392) or set OS_SDK=local flag")
++        #if preset('USE_ARCADIA_PYTHON') == 'no' and not preset('USE_SYSTEM_PYTHON') and not self.tc.os_sdk_local:
++        #    raise Exception("Use fixed python (see https://clubs.at.yandex-team.ru/arcadia/15392) or set OS_SDK=local flag")
+ 
+     def print_variables(self):
+         variables = Variables({
