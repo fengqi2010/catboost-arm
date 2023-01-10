@@ -7,7 +7,7 @@ Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 ===================================================================
 diff --git a/catboost/python-package/mk_wheel.py b/catboost/python-package/mk_wheel.py
 --- a/catboost/python-package/mk_wheel.py	(revision b99a4f935d19aeab0d8d190a83562f9b53aa54e2)
-+++ b/catboost/python-package/mk_wheel.py	(date 1673351850215)
++++ b/catboost/python-package/mk_wheel.py	(date 1673360739941)
 @@ -15,7 +15,8 @@
  
  sys.dont_write_bytecode = True
@@ -18,6 +18,15 @@ diff --git a/catboost/python-package/mk_wheel.py b/catboost/python-package/mk_wh
  PL_MACOS_X86_64 = [
      'macosx_10_6_intel',
      'macosx_10_9_intel',
+@@ -47,7 +48,7 @@
+     def gen_cmd(self, arc_path):
+         cmd = [
+             sys.executable, arc_root + '/ya', 'make', os.path.join(arc_root, arc_path),
+-            '--no-src-links', '-r', '--output', out_root, '-DPYTHON_CONFIG=' + self.py_config, '-DNO_DEBUGINFO', '-DOS_SDK=local',
++            '--no-src-links', '-r', '--output', out_root, '-DPYTHON_CONFIG=' + self.py_config, '-DNO_DEBUGINFO',
+         ]
+ 
+         if not self.python_version.from_sandbox:
 @@ -124,7 +125,10 @@
      platform_tags = set()
      for platform in target_platforms:
